@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "332967790981",
+    "project_id": "mat3amy-f840a",
+    "storage_bucket": "mat3amy-f840a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332967790981:android:881c5a1011d4950aebdcec",
+        "android_client_info": {
+          "package_name": "com.mat3amy.mat3amy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV6GX30ZjUMMfWqVE5k-VM7e22Ce_xYLQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332967790981:android:c93bce3d66c1a1d9ebdcec",
+        "android_client_info": {
+          "package_name": "com.mat3amy.mat3amy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV6GX30ZjUMMfWqVE5k-VM7e22Ce_xYLQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
