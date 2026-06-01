@@ -1,3 +1,4 @@
 {
-    "folder-color.pathColors": []
+    "folder-color.pathColors": [],
+    "C_Cpp.errorSquiggles": "disabled"
 }
