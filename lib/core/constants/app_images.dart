@@ -11,4 +11,7 @@ abstract class AppImages {
   static const String elkababgi1 = 'assets/images/elkababgi1.png';
   static const String elkababgi2 = 'assets/images/elkababgi2.png';
   static const String loadingJson = 'assets/images/loading.json';
+  static const String on1Svg = 'assets/images/on1.svg';
+  static const String on2Svg = 'assets/images/on2.svg';
+  static const String on3Svg = 'assets/images/on3.svg';
 }
