@@ -1,7 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:mat3amy/core/routes/routes.dart';
-import 'package:mat3amy/featurs/enboarding/onboarding_screen.dart';
-import 'package:mat3amy/featurs/splash/splash_screen.dart';
+import 'package:mat3amy/features/intro/enboarding/onboarding_screen.dart';
+import 'package:mat3amy/features/intro/splash/splash_screen.dart';
+import 'package:mat3amy/features/intro/welcom/welcome_screen.dart';
 
 class AppRouter {
   // configuration
@@ -15,6 +16,10 @@ class AppRouter {
       GoRoute(
         path: Routes.onboarding,
         builder: (context, state) => const OnboardingScreen(),
+      ),
+      GoRoute(
+        path: Routes.welcome,
+        builder: (context, state) => const WelcomeScreen(),
       ),
     ],
   );
