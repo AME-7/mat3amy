@@ -30,7 +30,7 @@ class WelcomeScreen extends StatelessWidget {
                 Text(
                   'اهلا بيك',
                   style: AppTextStyles.headline30.copyWith(
-                    color: AppColors.primaryColor,
+                    color: AppColors.greyColor,
                     fontSize: 36,
                   ),
                 ),

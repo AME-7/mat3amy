@@ -35,7 +35,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 SharedPref.setOnboardingShown();
                 pushReplacement(context, Routes.welcome);
               },
-              child: Text(LocaleKeys.skip.tr()),
+              child: Text(
+                LocaleKeys.skip.tr(),
+                style: TextStyle(color: AppColors.borderColor),
+              ),
             ),
         ],
       ),
