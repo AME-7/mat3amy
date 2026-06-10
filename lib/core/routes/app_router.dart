@@ -1,6 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:mat3amy/core/routes/routes.dart';
 import 'package:mat3amy/features/auth/presentation/page/login_screen.dart';
+import 'package:mat3amy/features/auth/presentation/page/register_screen.dart';
+import 'package:mat3amy/features/home/page/home_screen.dart';
 import 'package:mat3amy/features/intro/enboarding/onboarding_screen.dart';
 import 'package:mat3amy/features/intro/splash/splash_screen.dart';
 import 'package:mat3amy/features/intro/welcom/welcome_screen.dart';
@@ -25,6 +27,14 @@ class AppRouter {
       GoRoute(
         path: Routes.login,
         builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: Routes.register,
+        builder: (context, state) => const RegisterScreen(),
+      ),
+      GoRoute(
+        path: Routes.home,
+        builder: (context, state) => const HomeScreen(),
       ),
     ],
   );

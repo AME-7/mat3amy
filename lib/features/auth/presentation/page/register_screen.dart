@@ -14,14 +14,14 @@ import 'package:mat3amy/core/widget/password_text_form_field.dart';
 import 'package:mat3amy/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:mat3amy/features/auth/presentation/cubit/auth_state.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -37,7 +37,13 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         if (state is AuthSuccessState) {
-          pushToBase(context, Routes.home);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('تم إنشاء الحساب بنجاح، قم بتسجيل الدخول'),
+            ),
+          );
+
+          pushReplacement(context, Routes.login);
         }
       },
       builder: (context, state) {
@@ -56,16 +62,29 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SvgPicture.asset(AppImages.logoSvg, height: 200),
+
                       const SizedBox(height: 20),
 
-                      Text(
-                        'سجل دخول الان',
-                        style: AppTextStyles.title18.copyWith(
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
+                      Text('سجل حساب جديد', style: AppTextStyles.title18),
 
                       const SizedBox(height: 30),
+
+                      CustomTextFormField(
+                        controller: cubit.nameController,
+                        keyboardType: TextInputType.text,
+                        hintText: 'اسم المستخدم',
+                        prefixIcon: const Icon(Icons.person),
+                        textInputAction: TextInputAction.next,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'من فضلك ادخل الاسم';
+                          }
+
+                          return null;
+                        },
+                      ),
+
+                      const SizedBox(height: 25),
 
                       CustomTextFormField(
                         controller: cubit.emailController,
@@ -96,17 +115,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (value == null || value.isEmpty) {
                             return 'من فضلك ادخل كلمة المرور';
                           }
+
+                          if (value.length < 6) {
+                            return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
+                          }
+
                           return null;
                         },
-                      ),
-
-                      Container(
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Text(
-                          'نسيت كلمة السر ؟',
-                          style: AppTextStyles.small14,
-                        ),
                       ),
 
                       const Gap(20),
@@ -116,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ? null
                             : () {
                                 if (formKey.currentState!.validate()) {
-                                  cubit.login();
+                                  cubit.register();
                                 }
                               },
                         text: state is AuthLoadingState
@@ -124,25 +139,31 @@ class _LoginScreenState extends State<LoginScreen> {
                             : "تسجيل حساب جديد",
                       ),
 
-                      const Gap(30),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('ليس لدي حساب ؟', style: AppTextStyles.body16),
-                          const Gap(3),
-                          TextButton(
-                            onPressed: () {
-                              pushReplacement(context, Routes.register);
-                            },
-                            child: Text(
-                              'سجل الان',
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'لدي حساب ؟',
                               style: AppTextStyles.body16.copyWith(
-                                color: AppColors.primaryColor,
+                                color: AppColors.darkColor,
                               ),
                             ),
-                          ),
-                        ],
+
+                            TextButton(
+                              onPressed: () {
+                                pushReplacement(context, Routes.login);
+                              },
+                              child: Text(
+                                'سجل دخول',
+                                style: AppTextStyles.body16.copyWith(
+                                  color: AppColors.primaryColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

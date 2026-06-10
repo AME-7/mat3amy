@@ -13,8 +13,9 @@ class MainButton extends StatelessWidget {
     this.minHeight = 56,
     this.textColor = AppColors.whiteColor,
   });
+
   final String text;
-  final Function() onPressed;
+  final VoidCallback? onPressed;
   final Color bgColor;
   final Color? borderColor;
   final double minWidth;

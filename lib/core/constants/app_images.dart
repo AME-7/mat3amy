@@ -14,4 +14,5 @@ abstract class AppImages {
   static const String on1Svg = 'assets/images/on1.svg';
   static const String on2Svg = 'assets/images/on2.svg';
   static const String on3Svg = 'assets/images/on3.svg';
+  static const String logoSvg = 'assets/images/logo.svg';
 }

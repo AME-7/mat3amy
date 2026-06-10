@@ -56,14 +56,13 @@ class DefaultFirebaseOptions {
     projectId: 'mat3amy-f840a',
     storageBucket: 'mat3amy-f840a.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBZH3XOqclcii2PAc72_QI_-iiQ-xuz4zE',
     appId: '1:332967790981:ios:35892d80ac37d026ebdcec',
     messagingSenderId: '332967790981',
     projectId: 'mat3amy-f840a',
     storageBucket: 'mat3amy-f840a.firebasestorage.app',
+    iosClientId: '332967790981-qkgqlktvollak6jhv99eldkbml1ld3nr.apps.googleusercontent.com',
     iosBundleId: 'com.mat3amy.mat3amy',
   );
-
 }

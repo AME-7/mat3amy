@@ -9,10 +9,15 @@
       "client_info": {
         "mobilesdk_app_id": "1:332967790981:android:881c5a1011d4950aebdcec",
         "android_client_info": {
-          "package_name": "com.mat3amy.mat3amy"
+          "package_name": "com.example.mat3amy"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "332967790981-tltit6b92fhc6v9582be1m7ra21c8se5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAV6GX30ZjUMMfWqVE5k-VM7e22Ce_xYLQ"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332967790981-tltit6b92fhc6v9582be1m7ra21c8se5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "332967790981-8qpsvblr8hikbglsh7585rcdtpkjfj8u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mat3amy"
+              }
+            }
+          ]
         }
       }
     },
@@ -31,7 +48,12 @@
           "package_name": "com.mat3amy.mat3amy"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "332967790981-tltit6b92fhc6v9582be1m7ra21c8se5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAV6GX30ZjUMMfWqVE5k-VM7e22Ce_xYLQ"
@@ -39,7 +61,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332967790981-tltit6b92fhc6v9582be1m7ra21c8se5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "332967790981-8qpsvblr8hikbglsh7585rcdtpkjfj8u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mat3amy"
+              }
+            }
+          ]
         }
       }
     }
