@@ -55,8 +55,11 @@ class AuthRepo {
         uid: user?.uid,
         name: params.name,
         email: params.email,
+        image: '',
+        phone: '',
+        city: '',
+        bio: '',
       );
-
       await FirebaseProvider.addUser(userData);
 
       return right(unit);
@@ -75,7 +78,6 @@ class AuthRepo {
 
       return left(Failure(massage: e.message ?? 'حدث خطأ أثناء إنشاء الحساب'));
     } catch (e) {
-      print('ERROR:$e');
       return left(Failure(massage: 'حدث خطأ غير متوقع'));
     }
   }

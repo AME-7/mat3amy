@@ -1,93 +1,101 @@
-// import 'dart:developer';
+import 'dart:developer';
 
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:mat3amy/core/services/local/shared_pref.dart';
-// import 'package:mat3amy/features/auth/data/model/doctor_model.dart';
-// import 'package:mat3amy/features/auth/data/model/patient_model.dart';
-// import 'package:mat3amy/features/patient/booking/data/appointment_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mat3amy/core/services/local/shared_pref.dart';
+import 'package:mat3amy/features/auth/presentation/model/user_model.dart';
+import 'package:mat3amy/features/main/home/model/meal_model.dart';
+import 'package:mat3amy/features/main/home/model/reservation_model.dart';
+import 'package:mat3amy/features/main/home/model/restaurant_model.dart';
 
-// class FirebaseProvider {
-//   static final FirebaseAuth _auth = FirebaseAuth.instance;
-//   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+class FirebaseProvider {
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-//   static final patientCollection = _firestore.collection("patient");
-//   static final doctorCollection = _firestore.collection("doctor");
-//   static final appointmentsCollection = _firestore.collection("appointments");
+  static final usersCollection = _firestore.collection("users");
 
-//   static User? get currentUser => _auth.currentUser;
+  static final restaurantsCollection = _firestore.collection("restaurants");
 
-//   static Future<void> addPatient(PatientModel patient) async {
-//     await patientCollection.doc(patient.uid).set(patient.toJson());
-//   }
+  static final mealsCollection = _firestore.collection("meals");
 
-//   static Future<void> addBookedAppointment(AppointmentModel appointment) async {
-//     await appointmentsCollection.add(appointment.toJson());
-//   }
+  static final reservationsCollection = _firestore.collection("reservations");
 
-//   static Future<void> deleteBookedAppointment(String id) async {
-//     await appointmentsCollection.doc(id).delete();
-//   }
+  static User? get currentUser => _auth.currentUser;
 
-//   static Future<QuerySnapshot> getBookedAppointmentsByPatientId() async {
-//     return await appointmentsCollection
-//         .where("patientID", isEqualTo: SharedPref.getUserId())
-//         .get();
-//   }
+  // ================= USERS =================
 
-//   static Future<QuerySnapshot> getBookedAppointmentsByDoctorId() async {
-//     return await appointmentsCollection
-//         .where("doctorID", isEqualTo: SharedPref.getUserId())
-//         .get();
-//   }
+  static Future<void> addUser(UserModel user) async {
+    await usersCollection.doc(user.uid).set(user.toJson());
+  }
 
-//   static Future<void> addDoctor(DoctorModel doctor) async {
-//     await doctorCollection.doc(doctor.uid).set(doctor.toJson());
-//   }
+  static Future<void> updateUser(UserModel user) async {
+    await usersCollection.doc(user.uid).update(user.toUpdateData());
+  }
 
-//   static Future<void> updateDoctor(DoctorModel doctor) async {
-//     await doctorCollection.doc(doctor.uid).update(doctor.toUpdateData());
-//   }
+  static Stream<DocumentSnapshot<Object?>> getCurrentUser() {
+    return usersCollection.doc(SharedPref.getUserId()).snapshots();
+  }
 
-//   static Future<void> updatePatient(PatientModel patient) async {
-//     await patientCollection.doc(patient.uid).update(patient.toUpdateData());
-//   }
+  // ================= RESTAURANTS =================
 
-//   static Stream<DocumentSnapshot<Object?>> getCurrentPatient() {
-//     return patientCollection.doc(SharedPref.getUserId()).snapshots();
-//   }
+  static Future<List<RestaurantModel>> getRestaurantsData() async {
+    final snapshot = await restaurantsCollection.get();
 
-//   static Future<QuerySnapshot> getDoctors() async {
-//     return await doctorCollection.get();
-//   }
+    return snapshot.docs.map((doc) {
+      return RestaurantModel.fromJson(doc.data(), doc.id);
+    }).toList();
+  }
 
-//   static Future<QuerySnapshot> sortingDoctors() {
-//     return doctorCollection
-//         .where("specialization", isNull: false)
-//         .orderBy("rating", descending: true)
-//         .get();
-//   }
+  static Future<QuerySnapshot?> searchRestaurants(String name) async {
+    try {
+      return await restaurantsCollection
+          .orderBy("name")
+          .startAt([name.toLowerCase()])
+          .endAt(["${name.toLowerCase()}\uf8ff"])
+          .get();
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
+  }
 
-//   static Future<QuerySnapshot> getDoctorsBySpecialization(
-//     String specialization,
-//   ) async {
-//     return await doctorCollection
-//         .where("specialization", isEqualTo: specialization)
-//         .get();
-//   }
+  static Future<QuerySnapshot> getRestaurantsByCategory(String category) async {
+    return await restaurantsCollection
+        .where("category", isEqualTo: category)
+        .get();
+  }
 
-//   static Future<QuerySnapshot?> searchForDoctorsByName(String name) async {
-//     try {
-//       var result = await doctorCollection
-//           .where("specialization", isNull: false)
-//           .orderBy("name")
-//           .startAt([name.toLowerCase()])
-//           .endAt(["${name.toLowerCase()}\uf8ff"])
-//           .get();
-//       return result;
-//     } on Exception catch (e) {
-//       log(e.toString());
-//       return null;
-//     }
-//   }
-// }
+  // ================= MEALS =================
+
+  static Future<List<MealModel>> getMealsData(String restaurantId) async {
+    final snapshot = await mealsCollection
+        .where("restaurantId", isEqualTo: restaurantId)
+        .get();
+
+    return snapshot.docs.map((doc) {
+      return MealModel.fromJson(doc.data(), doc.id);
+    }).toList();
+  }
+
+  // ================= RESERVATIONS =================
+
+  static Future<void> addReservation(ReservationModel reservation) async {
+    await reservationsCollection.add(reservation.toJson());
+  }
+
+  static Future<List<ReservationModel>> getReservationsData(
+    String userId,
+  ) async {
+    final snapshot = await reservationsCollection
+        .where("userId", isEqualTo: userId)
+        .get();
+
+    return snapshot.docs.map((doc) {
+      return ReservationModel.fromJson(doc.data(), doc.id);
+    }).toList();
+  }
+
+  static Future<void> deleteReservation(String reservationId) async {
+    await reservationsCollection.doc(reservationId).delete();
+  }
+}

@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         if (state is AuthSuccessState) {
-          pushToBase(context, Routes.home);
+          pushToBase(context, Routes.mainApp);
         }
       },
       builder: (context, state) {

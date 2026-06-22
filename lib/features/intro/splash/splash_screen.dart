@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
     bool isLoggedIn = SharedPref.getUserId().isNotEmpty == true;
     Future.delayed(const Duration(seconds: 3)).then((value) {
       if (isLoggedIn) {
-        pushReplacement(context, Routes.welcome);
+        pushReplacement(context, Routes.mainApp);
       } else {
         if (isOnboardingShown) {
           pushReplacement(context, Routes.welcome);
