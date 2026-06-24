@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:mat3amy/core/firebase/firestore_provider.dart';
+import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/features/main/home/model/reservation_model.dart';
 
 class MyReservationsScreen extends StatefulWidget {

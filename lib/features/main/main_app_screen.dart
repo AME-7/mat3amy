@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:mat3amy/core/utils/styles/app_text_styles.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
+import 'package:mat3amy/features/main/home/page/favorites_scrren.dart';
 import 'package:mat3amy/features/main/home/page/home_screen.dart';
 import 'package:mat3amy/features/main/home/page/my_reservation_screen.dart';
 import 'package:mat3amy/features/main/profile/page/profile_screen.dart';
@@ -27,6 +28,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
     ),
     const SearchScreen(),
     const MyReservationsScreen(),
+    const FavoritesScreen(),
     const ProfileScreen(),
   ];
 
@@ -35,7 +37,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: const BorderRadius.only(
@@ -69,6 +71,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
               icon: Icons.calendar_month_rounded,
               text: 'الحجوزات',
             ),
+            GButton(iconSize: 29, icon: Icons.favorite, text: 'المفضلة'),
             GButton(iconSize: 29, icon: Icons.person, text: 'الحساب'),
           ],
           selectedIndex: _selectedIndex,

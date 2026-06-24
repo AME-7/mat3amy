@@ -19,6 +19,7 @@ class FirebaseProvider {
   static final mealsCollection = _firestore.collection("meals");
 
   static final reservationsCollection = _firestore.collection("reservations");
+  static final favoritesCollection = _firestore.collection("favorites");
 
   static User? get currentUser => _auth.currentUser;
 
@@ -97,5 +98,59 @@ class FirebaseProvider {
 
   static Future<void> deleteReservation(String reservationId) async {
     await reservationsCollection.doc(reservationId).delete();
+  }
+
+  static Future<void> addFavorite({
+    required String userId,
+    required String restaurantId,
+  }) async {
+    await favoritesCollection.add({
+      "userId": userId,
+      "restaurantId": restaurantId,
+    });
+  }
+
+  static Future<void> removeFavorite(String userId, String restaurantId) async {
+    final snapshot = await favoritesCollection
+        .where("userId", isEqualTo: userId)
+        .where("restaurantId", isEqualTo: restaurantId)
+        .get();
+
+    for (final doc in snapshot.docs) {
+      await doc.reference.delete();
+    }
+  }
+
+  static Future<bool> isFavorite(String userId, String restaurantId) async {
+    final snapshot = await favoritesCollection
+        .where("userId", isEqualTo: userId)
+        .where("restaurantId", isEqualTo: restaurantId)
+        .get();
+
+    return snapshot.docs.isNotEmpty;
+  }
+
+  static Future<List<RestaurantModel>> getFavoriteRestaurants(
+    String userId,
+  ) async {
+    final favoritesSnapshot = await favoritesCollection
+        .where("userId", isEqualTo: userId)
+        .get();
+
+    List<RestaurantModel> restaurants = [];
+
+    for (final favorite in favoritesSnapshot.docs) {
+      final restaurantId = favorite["restaurantId"];
+
+      final restaurantDoc = await restaurantsCollection.doc(restaurantId).get();
+
+      if (restaurantDoc.exists) {
+        restaurants.add(
+          RestaurantModel.fromJson(restaurantDoc.data()!, restaurantDoc.id),
+        );
+      }
+    }
+
+    return restaurants;
   }
 }

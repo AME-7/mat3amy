@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mat3amy/core/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/services/firebase/failure/failure.dart';
+import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/services/local/shared_pref.dart';
 import 'package:mat3amy/features/auth/presentation/model/auth_params.dart';
 import 'package:mat3amy/features/auth/presentation/model/user_model.dart';

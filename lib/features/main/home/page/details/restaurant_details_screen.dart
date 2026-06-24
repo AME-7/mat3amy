@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mat3amy/core/firebase/firestore_provider.dart';
+import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
 import 'package:mat3amy/features/main/home/model/meal_model.dart';
 import 'package:mat3amy/features/main/home/model/restaurant_model.dart';
@@ -18,11 +18,13 @@ class RestaurantDetailsScreen extends StatefulWidget {
 class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
   List<MealModel> meals = [];
   bool isLoadingMeals = true;
+  bool isFavorite = false;
 
   @override
   void initState() {
     super.initState();
     getMeals();
+    loadFavorite();
   }
 
   Future<void> getMeals() async {
@@ -37,12 +39,51 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
     });
   }
 
+  Future<void> loadFavorite() async {
+    final user = FirebaseProvider.currentUser;
+
+    if (user == null) return;
+
+    isFavorite = await FirebaseProvider.isFavorite(
+      user.uid,
+      widget.restaurant.id!,
+    );
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.restaurant.name ?? ''),
         backgroundColor: AppColors.primaryColor,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              final user = FirebaseProvider.currentUser;
+
+              if (user == null) return;
+
+              if (isFavorite) {
+                await FirebaseProvider.removeFavorite(
+                  user.uid,
+                  widget.restaurant.id!,
+                );
+              } else {
+                await FirebaseProvider.addFavorite(
+                  userId: user.uid,
+                  restaurantId: widget.restaurant.id!,
+                );
+              }
+
+              setState(() {
+                isFavorite = !isFavorite;
+              });
+            },
+            icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

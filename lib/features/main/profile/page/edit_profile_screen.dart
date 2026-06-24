@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mat3amy/core/firebase/firestore_provider.dart';
+import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/features/auth/presentation/model/user_model.dart';
 
 class EditProfileScreen extends StatefulWidget {
