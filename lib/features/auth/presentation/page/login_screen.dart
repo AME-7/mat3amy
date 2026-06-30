@@ -120,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }
                               },
                         text: state is AuthLoadingState
-                            ? "جاري إنشاء الحساب..."
+                            ? "جاري تسجيل الدخول ..."
                             : "تسجيل حساب جديد",
                       ),
 

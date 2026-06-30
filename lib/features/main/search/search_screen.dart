@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
-import 'package:mat3amy/features/main/home/page/details/restaurant_details_screen.dart';
 import 'package:mat3amy/features/main/home/model/restaurant_model.dart';
+import 'package:mat3amy/features/main/home/page/details/restaurant_details_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -15,12 +17,30 @@ class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController searchController = TextEditingController();
 
   List<RestaurantModel> restaurants = [];
+
   bool isLoading = false;
+  bool hasSearched = false;
+  Timer? _debounce;
+
+  void onSearchChanged(String value) {
+    if (_debounce?.isActive ?? false) {
+      _debounce!.cancel();
+    }
+
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      searchRestaurant(value);
+    });
+  }
 
   Future<void> searchRestaurant(String value) async {
+    setState(() {
+      hasSearched = true;
+    });
+
     if (value.trim().isEmpty) {
       setState(() {
         restaurants = [];
+        isLoading = false;
       });
       return;
     }
@@ -51,6 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void dispose() {
+    _debounce?.cancel();
     searchController.dispose();
     super.dispose();
   }
@@ -69,7 +90,7 @@ class _SearchScreenState extends State<SearchScreen> {
           children: [
             TextField(
               controller: searchController,
-              onChanged: searchRestaurant,
+              onChanged: onSearchChanged,
               decoration: InputDecoration(
                 hintText: "ابحث عن مطعم",
                 prefixIcon: const Icon(Icons.search),
@@ -81,68 +102,79 @@ class _SearchScreenState extends State<SearchScreen> {
 
             const SizedBox(height: 20),
 
-            if (isLoading)
-              const Expanded(child: Center(child: CircularProgressIndicator()))
-            else
-              Expanded(
-                child: restaurants.isEmpty
-                    ? const Center(child: Text("لا توجد نتائج"))
-                    : ListView.builder(
-                        itemCount: restaurants.length,
-                        itemBuilder: (context, index) {
-                          final restaurant = restaurants[index];
+            Expanded(
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : !hasSearched
+                  ? const Center(
+                      child: Text(
+                        "ابحث عن مطعم",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    )
+                  : restaurants.isEmpty
+                  ? const Center(
+                      child: Text(
+                        "لا توجد نتائج",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: restaurants.length,
+                      itemBuilder: (context, index) {
+                        final restaurant = restaurants[index];
 
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => RestaurantDetailsScreen(
-                                    restaurant: restaurant,
-                                  ),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => RestaurantDetailsScreen(
+                                  restaurant: restaurant,
                                 ),
-                              );
-                            },
-                            child: Card(
-                              margin: const EdgeInsets.only(bottom: 12),
-                              child: ListTile(
-                                leading: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    restaurant.image ?? '',
-                                    width: 60,
-                                    height: 60,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (_, _, _) {
-                                      return const Icon(
-                                        Icons.restaurant,
-                                        size: 50,
-                                      );
-                                    },
-                                  ),
+                              ),
+                            );
+                          },
+                          child: Card(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            child: ListTile(
+                              leading: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.network(
+                                  restaurant.image ?? '',
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, _, _) {
+                                    return const Icon(
+                                      Icons.restaurant,
+                                      size: 50,
+                                    );
+                                  },
                                 ),
-                                title: Text(restaurant.name ?? ''),
-                                subtitle: Text(
-                                  restaurant.description ?? '',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text("${restaurant.rate ?? 0}"),
-                                    const Icon(Icons.star, color: Colors.amber),
-                                  ],
-                                ),
-                                onTap: () {
-                                  // افتح صفحة تفاصيل المطعم هنا
-                                },
+                              ),
+                              title: Text(restaurant.name ?? ''),
+                              subtitle: Text(
+                                restaurant.description ?? '',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text("${restaurant.rate ?? 0}"),
+                                  const Icon(Icons.star, color: Colors.amber),
+                                ],
                               ),
                             ),
-                          );
-                        },
-                      ),
-              ),
+                          ),
+                        );
+                      },
+                    ),
+            ),
           ],
         ),
       ),

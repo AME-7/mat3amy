@@ -6,6 +6,7 @@ import 'package:mat3amy/features/intro/enboarding/onboarding_screen.dart';
 import 'package:mat3amy/features/intro/splash/splash_screen.dart';
 import 'package:mat3amy/features/intro/welcom/welcome_screen.dart';
 import 'package:mat3amy/features/main/main_app_screen.dart';
+import 'package:mat3amy/features/main/profile/setting/settings_view.dart';
 
 class AppRouter {
   // configuration
@@ -35,6 +36,10 @@ class AppRouter {
       GoRoute(
         path: Routes.mainApp,
         builder: (context, state) => const MainAppScreen(),
+      ),
+      GoRoute(
+        path: Routes.settings,
+        builder: (context, state) => const SettingsScreen(),
       ),
     ],
   );

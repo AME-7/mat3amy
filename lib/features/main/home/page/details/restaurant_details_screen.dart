@@ -88,18 +88,41 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.network(
-              widget.restaurant.image ?? '',
-              height: 250,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              errorBuilder: (_, _, _) {
-                return Container(
+            Hero(
+              tag: widget.restaurant.id!,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
+                ),
+                child: Image.network(
+                  widget.restaurant.image ?? '',
                   height: 250,
-                  color: Colors.grey.shade300,
-                  child: const Icon(Icons.restaurant, size: 80),
-                );
-              },
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+
+                    return SizedBox(
+                      height: 250,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                    );
+                  },
+                  errorBuilder: (_, _, _) {
+                    return Container(
+                      height: 250,
+                      color: Colors.grey.shade300,
+                      child: const Center(
+                        child: Icon(Icons.restaurant, size: 80),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
 
             Padding(
@@ -124,22 +147,43 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
 
                   const SizedBox(height: 20),
 
-                  Row(
-                    children: [
-                      const Icon(Icons.star, color: Colors.amber),
-                      const SizedBox(width: 5),
-                      Text("${widget.restaurant.rate ?? 0}"),
-                    ],
-                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 16,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            const Icon(Icons.star, color: Colors.amber),
+                            const SizedBox(height: 5),
+                            Text("${widget.restaurant.rate ?? 0}"),
+                          ],
+                        ),
 
-                  const SizedBox(height: 10),
+                        Column(
+                          children: [
+                            const Icon(Icons.location_on, color: Colors.red),
+                            const SizedBox(height: 5),
+                            Text(widget.restaurant.distance ?? ''),
+                          ],
+                        ),
 
-                  Row(
-                    children: [
-                      const Icon(Icons.location_on),
-                      const SizedBox(width: 5),
-                      Text(widget.restaurant.distance ?? ''),
-                    ],
+                        Column(
+                          children: [
+                            const Icon(Icons.restaurant, color: Colors.green),
+                            const SizedBox(height: 5),
+                            Text(widget.restaurant.category ?? ''),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
 
                   const SizedBox(height: 30),
@@ -204,6 +248,7 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                           MaterialPageRoute(
                             builder: (_) => ReservationScreen(
                               restaurant: widget.restaurant,
+                              meals: meals,
                             ),
                           ),
                         );

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mat3amy/core/constants/app_images.dart';
 import 'package:mat3amy/core/functions/image_uploader.dart';
+import 'package:mat3amy/core/routes/navigations.dart';
+import 'package:mat3amy/core/routes/routes.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/utils/styles/app_text_styles.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
@@ -42,6 +44,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         file = File(pickedFile.path);
       });
     }
+    if (file == null) return;
+
     String? profileUrl = await uploadImageToCloudinary(file!);
     FirebaseProvider.updateUser(UserModel(uid: userId, image: profileUrl));
   }
@@ -65,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             splashRadius: 20,
             icon: const Icon(Icons.settings, color: AppColors.whiteColor),
             onPressed: () {
-              // pushTo(context, Routes.settings);
+              pushTo(context, Routes.settings);
             },
           ),
         ],
@@ -138,26 +142,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 style: AppTextStyles.title18,
                               ),
                               const SizedBox(height: 10),
-                              (model.city?.isNotEmpty == true)
-                                  ? Text(
-                                      "${model.city}",
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (model.city?.isNotEmpty == true)
+                                    Text(
+                                      model.city!,
                                       style: AppTextStyles.body16,
-                                    )
-                                  : MainButton(
-                                      text: 'تعديل الحساب',
-
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (_) =>
-                                                EditProfileScreen(user: model),
-                                          ),
-                                        );
-                                      },
                                     ),
+
+                                  const SizedBox(height: 10),
+
+                                  MainButton(
+                                    text: 'تعديل الحساب',
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) =>
+                                              EditProfileScreen(user: model),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
                               const SizedBox(height: 15),
                             ],
                           ),
@@ -213,13 +222,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     const Divider(),
-                    const SizedBox(height: 20),
-                    Text(
-                      "حجوزاتي",
-                      style: AppTextStyles.body16.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+
+                    const SizedBox(height: 30),
                   ],
                 ),
               ),
