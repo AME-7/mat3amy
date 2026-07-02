@@ -75,4 +75,15 @@ class AuthCubit extends Cubit<AuthState> {
 
     return super.close();
   }
+
+  Future<void> loginWithGoogle() async {
+    emit(AuthLoadingState());
+
+    final result = await AuthRepo.signInWithGoogle();
+
+    result.fold(
+      (failure) => emit(AuthErrorState(error: failure.massage)),
+      (_) => emit(AuthSuccessState()),
+    );
+  }
 }

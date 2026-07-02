@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mat3amy/core/services/firebase/failure/failure.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/services/local/shared_pref.dart';
@@ -105,6 +106,36 @@ class AuthRepo {
       );
     } catch (e) {
       return left(Failure(massage: 'حدث خطأ غير متوقع'));
+    }
+  }
+
+  static Future<Either<Failure, Unit>> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      if (googleUser == null) {
+        return left(Failure(massage: "تم إلغاء العملية"));
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(
+        credential,
+      );
+
+      final user = userCredential.user;
+
+      await SharedPref.cacheUserId(user?.uid ?? '');
+
+      return right(unit);
+    } catch (e) {
+      return left(Failure(massage: e.toString()));
     }
   }
 }

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mat3amy/core/services/local/shared_pref.dart';
 import 'package:mat3amy/features/auth/presentation/model/user_model.dart';
 import 'package:mat3amy/features/main/home/model/meal_model.dart';
+import 'package:mat3amy/features/main/home/model/rating_model.dart';
 import 'package:mat3amy/features/main/home/model/reservation_model.dart';
 import 'package:mat3amy/features/main/home/model/restaurant_model.dart';
 
@@ -20,6 +21,9 @@ class FirebaseProvider {
 
   static final reservationsCollection = _firestore.collection("reservations");
   static final favoritesCollection = _firestore.collection("favorites");
+  static final ratingsCollection = FirebaseFirestore.instance.collection(
+    'ratinges',
+  );
 
   static User? get currentUser => _auth.currentUser;
 
@@ -96,8 +100,30 @@ class FirebaseProvider {
     }).toList();
   }
 
+  static Future<void> addRating(RatingModel rating) async {
+    await ratingsCollection.add(rating.toJson());
+  }
+
+  static Future<List<RatingModel>> getRestaurantRatings(
+    String restaurantId,
+  ) async {
+    final snapshot = await ratingsCollection
+        .where("restaurantId", isEqualTo: restaurantId)
+        .get();
+
+    return snapshot.docs.map((doc) {
+      return RatingModel.fromJson(doc.data(), doc.id);
+    }).toList();
+  }
+
   static Future<void> deleteReservation(String reservationId) async {
     await reservationsCollection.doc(reservationId).delete();
+  }
+
+  static Future<void> updateReservation(ReservationModel reservation) async {
+    await reservationsCollection
+        .doc(reservation.id)
+        .update(reservation.toJson());
   }
 
   static Future<void> addFavorite({

@@ -3,7 +3,9 @@ import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
 import 'package:mat3amy/features/main/home/model/meal_model.dart';
 import 'package:mat3amy/features/main/home/model/restaurant_model.dart';
+import 'package:mat3amy/features/main/home/page/details/add_rating_screen.dart';
 import 'package:mat3amy/features/main/home/page/reservation_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RestaurantDetailsScreen extends StatefulWidget {
   const RestaurantDetailsScreen({super.key, required this.restaurant});
@@ -25,6 +27,17 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
     super.initState();
     getMeals();
     loadFavorite();
+  }
+
+  Future<void> openMap() async {
+    if (widget.restaurant.mapUrl == null || widget.restaurant.mapUrl!.isEmpty) {
+      return;
+    }
+
+    await launchUrl(
+      Uri.parse(widget.restaurant.mapUrl!),
+      mode: LaunchMode.externalApplication,
+    );
   }
 
   Future<void> getMeals() async {
@@ -167,12 +180,15 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                           ],
                         ),
 
-                        Column(
-                          children: [
-                            const Icon(Icons.location_on, color: Colors.red),
-                            const SizedBox(height: 5),
-                            Text(widget.restaurant.distance ?? ''),
-                          ],
+                        GestureDetector(
+                          onTap: openMap,
+                          child: Column(
+                            children: [
+                              const Icon(Icons.location_on, color: Colors.red),
+                              const SizedBox(height: 5),
+                              Text(widget.restaurant.distance ?? ''),
+                            ],
+                          ),
                         ),
 
                         Column(
@@ -237,6 +253,26 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                     ),
 
                   const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 55,
+                    child: OutlinedButton.icon(
+                      icon: const Icon(Icons.star),
+                      label: const Text("إضافة تقييم"),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AddRatingScreen(
+                              restaurantId: widget.restaurant.id!,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
+                  const SizedBox(height: 15),
 
                   SizedBox(
                     width: double.infinity,
@@ -253,6 +289,7 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                           ),
                         );
                       },
+
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryColor,
                       ),

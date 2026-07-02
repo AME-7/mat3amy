@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/features/main/home/model/reservation_model.dart';
+import 'package:mat3amy/features/main/home/page/edit_reservation_screen.dart';
 
 class MyReservationsScreen extends StatefulWidget {
   const MyReservationsScreen({super.key});
@@ -80,8 +80,49 @@ class _MyReservationsScreenState extends State<MyReservationsScreen> {
                             IconButton(
                               icon: const Icon(Icons.delete, color: Colors.red),
                               onPressed: () async {
-                                await deleteReservation(reservation.id!);
+                                final result = await showDialog<bool>(
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                    title: const Text("إلغاء الحجز"),
+                                    content: const Text(
+                                      "هل أنت متأكد من إلغاء الحجز؟",
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context, false);
+                                        },
+                                        child: const Text("لا"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context, true);
+                                        },
+                                        child: const Text("نعم"),
+                                      ),
+                                    ],
+                                  ),
+                                );
+
+                                if (result == true) {
+                                  await deleteReservation(reservation.id!);
+                                }
                               },
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => EditReservationScreen(
+                                      reservation: reservation,
+                                    ),
+                                  ),
+                                );
+
+                                getReservations();
+                              },
+                              icon: Icon(Icons.edit, color: Colors.blue),
                             ),
                           ],
                         ),
@@ -97,8 +138,42 @@ class _MyReservationsScreenState extends State<MyReservationsScreen> {
                         const SizedBox(height: 5),
 
                         Text("الوقت: ${reservation.time}"),
-                        Gap(5),
-                        Text("رقم الهاتف ${reservation.phone ?? ''}"),
+
+                        const SizedBox(height: 5),
+
+                        Text("رقم الهاتف: ${reservation.phone ?? ''}"),
+
+                        const SizedBox(height: 10),
+
+                        if (reservation.meals != null &&
+                            reservation.meals!.isNotEmpty) ...[
+                          const Text(
+                            "الوجبات:",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+
+                          const SizedBox(height: 5),
+
+                          ...reservation.meals!.map(
+                            (meal) => Padding(
+                              padding: const EdgeInsets.only(bottom: 4),
+                              child: Text(
+                                "${meal['mealName']} x ${meal['quantity']}",
+                              ),
+                            ),
+                          ),
+                        ],
+
+                        const SizedBox(height: 10),
+
+                        Text(
+                          "الإجمالي: ${reservation.totalPrice?.toStringAsFixed(0) ?? 0} ج",
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
+                          ),
+                        ),
                       ],
                     ),
                   ),

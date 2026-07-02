@@ -125,6 +125,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
 
                       const Gap(30),
+                      OutlinedButton.icon(
+                        onPressed: () {
+                          context.read<AuthCubit>().loginWithGoogle();
+                        },
+                        icon: const Icon(Icons.g_mobiledata),
+                        label: const Text("تسجيل الدخول بواسطة Google"),
+                      ),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "332967790981-tltit6b92fhc6v9582be1m7ra21c8se5.apps.googleusercontent.com",
+          "client_id": "332967790981-fdfgsorpcj0hisneqrqa13402vek0mnl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mat3amy",
+            "certificate_hash": "f9c19ff40052bb35d27a5dfd555c5476d7f3e316"
+          }
+        },
+        {
+          "client_id": "332967790981-dntv8v6f3kpbv9sufld5nnuaddvpnio4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +35,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "332967790981-tltit6b92fhc6v9582be1m7ra21c8se5.apps.googleusercontent.com",
+              "client_id": "332967790981-dntv8v6f3kpbv9sufld5nnuaddvpnio4.apps.googleusercontent.com",
               "client_type": 3
             },
             {
@@ -50,7 +58,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "332967790981-tltit6b92fhc6v9582be1m7ra21c8se5.apps.googleusercontent.com",
+          "client_id": "332967790981-8kbv8d5qudqo5ggd8kcbtok90dne5d19.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mat3amy.mat3amy",
+            "certificate_hash": "f9c19ff40052bb35d27a5dfd555c5476d7f3e316"
+          }
+        },
+        {
+          "client_id": "332967790981-dntv8v6f3kpbv9sufld5nnuaddvpnio4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -63,7 +79,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "332967790981-tltit6b92fhc6v9582be1m7ra21c8se5.apps.googleusercontent.com",
+              "client_id": "332967790981-dntv8v6f3kpbv9sufld5nnuaddvpnio4.apps.googleusercontent.com",
               "client_type": 3
             },
             {

@@ -4,6 +4,7 @@ class RestaurantModel {
   final String? description;
   final String? image;
   final String? category;
+  final String? mapUrl;
   final String? distance;
   final double? rate;
 
@@ -15,6 +16,7 @@ class RestaurantModel {
     this.category,
     this.distance,
     this.rate,
+    this.mapUrl,
   });
 
   factory RestaurantModel.fromJson(
@@ -27,6 +29,7 @@ class RestaurantModel {
       description: json['description'],
       image: json['image'],
       category: json['category'],
+      mapUrl: json['mapUrl'],
       distance: json['distance'],
       rate: (json['rate'] as num?)?.toDouble(),
     );
@@ -40,6 +43,7 @@ class RestaurantModel {
       'category': category,
       'distance': distance,
       'rate': rate,
+      'mapUrl': mapUrl,
     };
   }
 }
