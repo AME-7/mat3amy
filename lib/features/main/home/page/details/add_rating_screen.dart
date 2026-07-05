@@ -26,6 +26,7 @@ class _AddRatingScreenState extends State<AddRatingScreen> {
 
     final rate = RatingModel(
       userId: user.uid,
+      userName: user.displayName ?? "مستخدم",
       restaurantId: widget.restaurantId,
       rate: rating,
       comment: commentController.text.trim(),
@@ -39,7 +40,7 @@ class _AddRatingScreenState extends State<AddRatingScreen> {
       context,
     ).showSnackBar(const SnackBar(content: Text("تم إضافة التقييم بنجاح")));
 
-    Navigator.pop(context);
+    Navigator.pop(context, true);
   }
 
   @override

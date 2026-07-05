@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
 import 'package:mat3amy/features/main/home/model/meal_model.dart';
+import 'package:mat3amy/features/main/home/model/rating_model.dart';
 import 'package:mat3amy/features/main/home/model/restaurant_model.dart';
 import 'package:mat3amy/features/main/home/page/details/add_rating_screen.dart';
 import 'package:mat3amy/features/main/home/page/reservation_screen.dart';
@@ -18,15 +19,41 @@ class RestaurantDetailsScreen extends StatefulWidget {
 }
 
 class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
+  List<RatingModel> ratings = [];
   List<MealModel> meals = [];
+  bool isLoadingRatings = true;
   bool isLoadingMeals = true;
   bool isFavorite = false;
+  double averageRating = 0;
 
   @override
   void initState() {
     super.initState();
     getMeals();
     loadFavorite();
+    getRatings();
+  }
+
+  Future<void> getRatings() async {
+    ratings = await FirebaseProvider.getRestaurantRatings(
+      widget.restaurant.id!,
+    );
+
+    if (ratings.isNotEmpty) {
+      double total = 0;
+
+      for (final rating in ratings) {
+        total += rating.rate ?? 0;
+      }
+
+      averageRating = total / ratings.length;
+    } else {
+      averageRating = 0;
+    }
+
+    setState(() {
+      isLoadingRatings = false;
+    });
   }
 
   Future<void> openMap() async {
@@ -176,7 +203,9 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                           children: [
                             const Icon(Icons.star, color: Colors.amber),
                             const SizedBox(height: 5),
-                            Text("${widget.restaurant.rate ?? 0}"),
+                            Text(
+                              "${averageRating.toStringAsFixed(1)} (${ratings.length})",
+                            ),
                           ],
                         ),
 
@@ -259,8 +288,8 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                     child: OutlinedButton.icon(
                       icon: const Icon(Icons.star),
                       label: const Text("إضافة تقييم"),
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: () async {
+                        await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (_) => AddRatingScreen(
@@ -268,41 +297,121 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> {
                             ),
                           ),
                         );
+
+                        getRatings();
                       },
                     ),
                   ),
+                  const SizedBox(height: 25),
 
-                  const SizedBox(height: 15),
+                  const Text(
+                    "التقييمات",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
 
-                  SizedBox(
-                    width: double.infinity,
-                    height: 55,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => ReservationScreen(
-                              restaurant: widget.restaurant,
-                              meals: meals,
+                  const SizedBox(height: 10),
+
+                  if (isLoadingRatings)
+                    const Center(child: CircularProgressIndicator())
+                  else if (ratings.isEmpty)
+                    const Text("لا توجد تقييمات")
+                  else
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: ratings.length,
+                      itemBuilder: (context, index) {
+                        final rating = ratings[index];
+
+                        return Card(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const CircleAvatar(
+                                      child: Icon(Icons.person),
+                                    ),
+
+                                    const SizedBox(width: 10),
+
+                                    Expanded(
+                                      child: Text(
+                                        rating.userName ?? "مستخدم",
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 10),
+
+                                Row(
+                                  children: List.generate(
+                                    5,
+                                    (starIndex) => Icon(
+                                      starIndex < (rating.rate ?? 0).round()
+                                          ? Icons.star
+                                          : Icons.star_border,
+                                      color: Colors.amber,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+
+                                const SizedBox(height: 10),
+
+                                Text(
+                                  rating.comment ?? "",
+                                  style: const TextStyle(fontSize: 15),
+                                ),
+                              ],
                             ),
                           ),
                         );
                       },
-
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryColor,
-                      ),
-                      child: const Text(
-                        "احجز الآن",
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                      ),
                     ),
-                  ),
+
+                  const SizedBox(height: 15),
                 ],
               ),
             ),
           ],
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: SizedBox(
+            width: double.infinity,
+            height: 55,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ReservationScreen(
+                      restaurant: widget.restaurant,
+                      meals: meals,
+                    ),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryColor,
+              ),
+              child: const Text(
+                "احجز الآن",
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+            ),
+          ),
         ),
       ),
     );

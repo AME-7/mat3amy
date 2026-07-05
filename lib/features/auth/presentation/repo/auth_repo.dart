@@ -133,6 +133,20 @@ class AuthRepo {
 
       await SharedPref.cacheUserId(user?.uid ?? '');
 
+      if (user != null) {
+        final userData = UserModel(
+          uid: user.uid,
+          name: user.displayName ?? '',
+          email: user.email ?? '',
+          image: user.photoURL ?? '',
+          phone: '',
+          city: '',
+          bio: '',
+        );
+
+        await FirebaseProvider.addUser(userData);
+      }
+
       return right(unit);
     } catch (e) {
       return left(Failure(massage: e.toString()));
