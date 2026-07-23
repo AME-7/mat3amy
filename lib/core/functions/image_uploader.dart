@@ -16,8 +16,8 @@ Future<String?> uploadImageToCloudinary(File imageFile) async {
   final request = http.MultipartRequest('POST', url);
 
   // 3. Add the upload preset
-  request.fields['upload_preset'] = "mat3amy";
-
+  request.fields['upload_preset'] = "se7ety";
+  request.fields['folder'] = "restaurants";
   // 4. Add the file to the request
   request.files.add(
     await http.MultipartFile.fromPath(

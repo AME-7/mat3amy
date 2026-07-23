@@ -37,7 +37,25 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         if (state is AuthSuccessState) {
-          pushToBase(context, Routes.mainApp);
+          final result = state.loginResult;
+
+          if (result == null) {
+            pushToBase(context, Routes.mainApp);
+            return;
+          }
+
+          if (result.role == "admin") {
+            pushToBase(context, Routes.adminRequests);
+          } else if (result.role == "user") {
+            pushToBase(context, Routes.mainApp);
+          } else if (result.role == "restaurant") {
+            if (result.hasRestaurantRequest) {
+              // غيرها لما تعمل شاشة المطعم الرئيسية
+              // pushToBase(context, Routes.restaurantMain);
+            } else {
+              pushToBase(context, Routes.restaurantInfo);
+            }
+          }
         }
       },
       builder: (context, state) {
@@ -56,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SvgPicture.asset(AppImages.logoSvg, height: 200),
+
                       const SizedBox(height: 20),
 
                       Text(
@@ -96,6 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (value == null || value.isEmpty) {
                             return 'من فضلك ادخل كلمة المرور';
                           }
+
                           return null;
                         },
                       ),
@@ -120,14 +140,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }
                               },
                         text: state is AuthLoadingState
-                            ? "جاري تسجيل الدخول ..."
-                            : "تسجيل حساب جديد",
+                            ? "جاري تسجيل الدخول..."
+                            : "تسجيل الدخول",
                       ),
 
                       const Gap(30),
+
                       OutlinedButton.icon(
                         onPressed: () {
-                          context.read<AuthCubit>().loginWithGoogle();
+                          cubit.loginWithGoogle();
                         },
                         icon: const Icon(Icons.g_mobiledata),
                         label: const Text("تسجيل الدخول بواسطة Google"),

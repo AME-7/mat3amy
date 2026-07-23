@@ -4,11 +4,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mat3amy/core/services/firebase/failure/failure.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/services/local/shared_pref.dart';
-import 'package:mat3amy/features/auth/presentation/model/auth_params.dart';
+import 'package:mat3amy/features/auth/presentation/model/login_result.dart';
+import 'package:mat3amy/features/auth/presentation/repo/auth_params.dart';
 import 'package:mat3amy/features/auth/presentation/model/user_model.dart';
 
 class AuthRepo {
-  static Future<Either<Failure, Unit>> login(AuthParams params) async {
+  static Future<Either<Failure, LoginResult>> login(AuthParams params) async {
     try {
       final UserCredential credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
@@ -16,9 +17,26 @@ class AuthRepo {
             password: params.password,
           );
 
-      await SharedPref.cacheUserId(credential.user?.uid ?? '');
+      await SharedPref.cacheUserId(credential.user!.uid);
 
-      return right(unit);
+      final user = await FirebaseProvider.getUserData(credential.user!.uid);
+
+      bool hasRestaurantRequest = false;
+
+      if (user.role == "restaurant") {
+        final request = await FirebaseProvider.getMyRestaurantRequest(
+          credential.user!.uid,
+        );
+
+        hasRestaurantRequest = request != null;
+      }
+
+      return right(
+        LoginResult(
+          role: user.role ?? "user",
+          hasRestaurantRequest: hasRestaurantRequest,
+        ),
+      );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         return left(Failure(massage: 'الحساب غير موجود'));
@@ -38,9 +56,9 @@ class AuthRepo {
     }
   }
 
-  static Future<Either<Failure, Unit>> register(AuthParams params) async {
+  static Future<Either<Failure, Unit>> registerUser(AuthParams params) async {
     try {
-      final UserCredential credential = await FirebaseAuth.instance
+      final credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
             email: params.email,
             password: params.password,
@@ -60,7 +78,9 @@ class AuthRepo {
         phone: '',
         city: '',
         bio: '',
+        role: "user",
       );
+
       await FirebaseProvider.addUser(userData);
 
       return right(unit);
@@ -73,13 +93,54 @@ class AuthRepo {
         return left(Failure(massage: 'هذا البريد الإلكتروني مستخدم بالفعل'));
       }
 
-      if (e.code == 'invalid-email') {
-        return left(Failure(massage: 'البريد الإلكتروني غير صالح'));
+      return left(Failure(massage: e.message ?? 'حدث خطأ'));
+    } catch (_) {
+      return left(Failure(massage: 'حدث خطأ'));
+    }
+  }
+
+  static Future<Either<Failure, Unit>> registerRestaurant(
+    AuthParams params,
+  ) async {
+    try {
+      final credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: params.email,
+            password: params.password,
+          );
+
+      User? user = credential.user;
+
+      await user?.updateDisplayName(params.name);
+
+      await SharedPref.cacheUserId(user?.uid ?? '');
+
+      final userData = UserModel(
+        uid: user?.uid,
+        name: params.name,
+        email: params.email,
+        image: '',
+        phone: '',
+        city: '',
+        bio: '',
+        role: "restaurant",
+      );
+
+      await FirebaseProvider.addUser(userData);
+
+      return right(unit);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        return left(Failure(massage: 'كلمة المرور ضعيفة'));
       }
 
-      return left(Failure(massage: e.message ?? 'حدث خطأ أثناء إنشاء الحساب'));
-    } catch (e) {
-      return left(Failure(massage: 'حدث خطأ غير متوقع'));
+      if (e.code == 'email-already-in-use') {
+        return left(Failure(massage: 'هذا البريد الإلكتروني مستخدم بالفعل'));
+      }
+
+      return left(Failure(massage: e.message ?? 'حدث خطأ'));
+    } catch (_) {
+      return left(Failure(massage: 'حدث خطأ'));
     }
   }
 
@@ -142,6 +203,7 @@ class AuthRepo {
           phone: '',
           city: '',
           bio: '',
+          role: "user",
         );
 
         await FirebaseProvider.addUser(userData);

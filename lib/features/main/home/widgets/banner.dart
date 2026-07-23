@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
-import 'package:mat3amy/features/main/home/model/restaurant_model.dart';
+import 'package:mat3amy/features/restaurant/model/restaurant_model.dart';
 
 class HomeBannerWidget extends StatelessWidget {
   const HomeBannerWidget({

@@ -6,7 +6,7 @@ import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/utils/styles/app_text_styles.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
 import 'package:mat3amy/features/main/home/widgets/header.dart';
-import 'package:mat3amy/features/main/home/model/restaurant_model.dart';
+import 'package:mat3amy/features/restaurant/model/restaurant_model.dart';
 import 'package:mat3amy/features/main/home/widgets/banner.dart';
 import 'package:mat3amy/features/main/home/widgets/categories.dart';
 import 'package:mat3amy/features/main/home/widgets/restaurant_list.dart';

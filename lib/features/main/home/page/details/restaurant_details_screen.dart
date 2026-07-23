@@ -3,7 +3,7 @@ import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
 import 'package:mat3amy/features/main/home/model/meal_model.dart';
 import 'package:mat3amy/features/main/home/model/rating_model.dart';
-import 'package:mat3amy/features/main/home/model/restaurant_model.dart';
+import 'package:mat3amy/features/restaurant/model/restaurant_model.dart';
 import 'package:mat3amy/features/main/home/page/details/add_rating_screen.dart';
 import 'package:mat3amy/features/main/home/page/reservation_screen.dart';
 import 'package:url_launcher/url_launcher.dart';

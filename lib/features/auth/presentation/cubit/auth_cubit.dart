@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mat3amy/features/auth/presentation/cubit/auth_state.dart';
-import 'package:mat3amy/features/auth/presentation/model/auth_params.dart';
+import 'package:mat3amy/features/auth/presentation/repo/auth_params.dart';
 import 'package:mat3amy/features/auth/presentation/repo/auth_repo.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -18,6 +18,7 @@ class AuthCubit extends Cubit<AuthState> {
       AuthParams(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
+        role: '',
       ),
     );
 
@@ -25,29 +26,32 @@ class AuthCubit extends Cubit<AuthState> {
       (failure) {
         emit(AuthErrorState(error: failure.massage));
       },
-      (_) {
-        emit(AuthSuccessState());
+      (loginResult) {
+        emit(AuthSuccessState(loginResult));
       },
     );
   }
 
-  Future<void> register() async {
+  Future<void> register({required bool isRestaurant}) async {
     emit(AuthLoadingState());
 
-    final result = await AuthRepo.register(
-      AuthParams(
-        name: nameController.text.trim(),
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      ),
+    final params = AuthParams(
+      name: nameController.text.trim(),
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+      role: isRestaurant ? "restaurant" : "user",
     );
+
+    final result = isRestaurant
+        ? await AuthRepo.registerRestaurant(params)
+        : await AuthRepo.registerUser(params);
 
     result.fold(
       (failure) {
         emit(AuthErrorState(error: failure.massage));
       },
       (_) {
-        emit(AuthSuccessState());
+        emit(AuthSuccessState(null));
       },
     );
   }
@@ -62,7 +66,22 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthErrorState(error: failure.massage));
       },
       (_) {
-        emit(AuthSuccessState());
+        emit(AuthSuccessState(null));
+      },
+    );
+  }
+
+  Future<void> loginWithGoogle() async {
+    emit(AuthLoadingState());
+
+    final result = await AuthRepo.signInWithGoogle();
+
+    result.fold(
+      (failure) {
+        emit(AuthErrorState(error: failure.massage));
+      },
+      (_) {
+        emit(AuthSuccessState(null));
       },
     );
   }
@@ -72,18 +91,6 @@ class AuthCubit extends Cubit<AuthState> {
     nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
-
     return super.close();
-  }
-
-  Future<void> loginWithGoogle() async {
-    emit(AuthLoadingState());
-
-    final result = await AuthRepo.signInWithGoogle();
-
-    result.fold(
-      (failure) => emit(AuthErrorState(error: failure.massage)),
-      (_) => emit(AuthSuccessState()),
-    );
   }
 }

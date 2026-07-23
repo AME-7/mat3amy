@@ -23,6 +23,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
+  bool isRestaurant = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +38,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
         }
 
         if (state is AuthSuccessState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('تم إنشاء الحساب بنجاح، قم بتسجيل الدخول'),
-            ),
-          );
+          if (isRestaurant) {
+            pushReplacement(context, Routes.restaurantInfo);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("تم إنشاء الحساب بنجاح")),
+            );
 
-          pushReplacement(context, Routes.login);
+            pushReplacement(context, Routes.login);
+          }
         }
       },
       builder: (context, state) {
@@ -123,6 +126,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           return null;
                         },
                       ),
+                      Column(
+                        children: [
+                          RadioListTile<bool>(
+                            value: false,
+                            // ignore: deprecated_member_use
+                            groupValue: isRestaurant,
+                            title: const Text("مستخدم"),
+                            // ignore: deprecated_member_use
+                            onChanged: (value) {
+                              setState(() {
+                                isRestaurant = value!;
+                              });
+                            },
+                          ),
+
+                          RadioListTile<bool>(
+                            value: true,
+                            groupValue: isRestaurant,
+                            title: const Text("صاحب مطعم"),
+                            onChanged: (value) {
+                              setState(() {
+                                isRestaurant = value!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
 
                       const Gap(20),
 
@@ -131,7 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ? null
                             : () {
                                 if (formKey.currentState!.validate()) {
-                                  cubit.register();
+                                  cubit.register(isRestaurant: isRestaurant);
                                 }
                               },
                         text: state is AuthLoadingState

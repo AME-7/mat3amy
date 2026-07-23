@@ -10,4 +10,6 @@ class Routes {
   static String register = '/register';
   static String mainApp = '/patientMainApp';
   static String settings = '/settings';
+  static const restaurantInfo = "/restaurantInfo";
+  static const adminRequests = "/adminRequests";
 }

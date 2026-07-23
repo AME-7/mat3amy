@@ -7,7 +7,8 @@ import 'package:mat3amy/features/auth/presentation/model/user_model.dart';
 import 'package:mat3amy/features/main/home/model/meal_model.dart';
 import 'package:mat3amy/features/main/home/model/rating_model.dart';
 import 'package:mat3amy/features/main/home/model/reservation_model.dart';
-import 'package:mat3amy/features/main/home/model/restaurant_model.dart';
+import 'package:mat3amy/features/restaurant/model/restaurant_model.dart';
+import 'package:mat3amy/features/restaurant/model/restaurant_request_model.dart';
 
 class FirebaseProvider {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -16,6 +17,9 @@ class FirebaseProvider {
   static final usersCollection = _firestore.collection("users");
 
   static final restaurantsCollection = _firestore.collection("restaurants");
+  static final restaurantRequestsCollection = _firestore.collection(
+    "restaurant_request",
+  );
 
   static final mealsCollection = _firestore.collection("meals");
 
@@ -41,7 +45,66 @@ class FirebaseProvider {
     return usersCollection.doc(SharedPref.getUserId()).snapshots();
   }
 
+  static Future<UserModel> getUserData(String uid) async {
+    final doc = await usersCollection.doc(uid).get();
+
+    return UserModel.fromJson(doc.data()!);
+  }
+
+  static Future<void> approveRestaurant(RestaurantRequestModel request) async {
+    await restaurantsCollection.doc(request.ownerId).set({
+      "ownerId": request.ownerId,
+      "name": request.name,
+      "description": request.description,
+      "image": request.image,
+      "category": request.category,
+      "mapUrl": request.mapUrl,
+      "phone": request.phone,
+      "city": request.city,
+      "tablesCount": request.tablesCount,
+      "workHours": request.workHours,
+      "status": "approved",
+    });
+
+    await restaurantRequestsCollection.doc(request.ownerId).delete();
+  }
+
+  static Future<void> rejectRestaurant(String ownerId) async {
+    await restaurantRequestsCollection.doc(ownerId).delete();
+  }
+
   // ================= RESTAURANTS =================
+  static Future<void> addRestaurantRequest(
+    RestaurantRequestModel request,
+  ) async {
+    await restaurantRequestsCollection
+        .doc(request.ownerId)
+        .set(request.toJson());
+  }
+
+  static Future<List<RestaurantRequestModel>> getRestaurantRequests() async {
+    final snapshot = await restaurantRequestsCollection.get();
+
+    return snapshot.docs.map((doc) {
+      return RestaurantRequestModel.fromJson(doc.data(), doc.id);
+    }).toList();
+  }
+
+  static Future<RestaurantRequestModel?> getMyRestaurantRequest(
+    String ownerId,
+  ) async {
+    final snapshot = await restaurantRequestsCollection
+        .where("ownerId", isEqualTo: ownerId)
+        .limit(1)
+        .get();
+
+    if (snapshot.docs.isEmpty) return null;
+
+    return RestaurantRequestModel.fromJson(
+      snapshot.docs.first.data(),
+      snapshot.docs.first.id,
+    );
+  }
 
   static Future<List<RestaurantModel>> getRestaurantsData() async {
     final snapshot = await restaurantsCollection.get();
@@ -71,6 +134,17 @@ class FirebaseProvider {
   }
 
   // ================= MEALS =================
+  static Future<void> addMeal(MealModel meal) async {
+    await mealsCollection.add(meal.toJson());
+  }
+
+  static Future<void> updateMeal(MealModel meal) async {
+    await mealsCollection.doc(meal.id).update(meal.toJson());
+  }
+
+  static Future<void> deleteMeal(String mealId) async {
+    await mealsCollection.doc(mealId).delete();
+  }
 
   static Future<List<MealModel>> getMealsData(String restaurantId) async {
     final snapshot = await mealsCollection
@@ -93,6 +167,18 @@ class FirebaseProvider {
   ) async {
     final snapshot = await reservationsCollection
         .where("userId", isEqualTo: userId)
+        .get();
+
+    return snapshot.docs.map((doc) {
+      return ReservationModel.fromJson(doc.data(), doc.id);
+    }).toList();
+  }
+
+  static Future<List<ReservationModel>> getRestaurantReservations(
+    String restaurantId,
+  ) async {
+    final snapshot = await reservationsCollection
+        .where("restaurantId", isEqualTo: restaurantId)
         .get();
 
     return snapshot.docs.map((doc) {
@@ -145,6 +231,32 @@ class FirebaseProvider {
     for (final doc in snapshot.docs) {
       await doc.reference.delete();
     }
+  }
+
+  static Future<RestaurantModel?> getMyRestaurant() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    final snapshot = await restaurantsCollection
+        .where("ownerId", isEqualTo: uid)
+        .limit(1)
+        .get();
+
+    if (snapshot.docs.isEmpty) return null;
+
+    return RestaurantModel.fromJson(
+      snapshot.docs.first.data(),
+      snapshot.docs.first.id,
+    );
+  }
+
+  static Future<void> updateRestaurant(RestaurantModel restaurant) async {
+    await restaurantsCollection
+        .doc(restaurant.ownerId)
+        .update(restaurant.toJson());
+  }
+
+  static Future<void> deleteRestaurant(String ownerId) async {
+    await restaurantsCollection.doc(ownerId).delete();
   }
 
   static Future<bool> isFavorite(String userId, String restaurantId) async {

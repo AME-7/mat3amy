@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
-import 'package:mat3amy/features/main/home/model/restaurant_model.dart';
+import 'package:mat3amy/features/restaurant/model/restaurant_model.dart';
 import 'package:mat3amy/features/main/home/page/details/restaurant_details_screen.dart';
 
 class SearchScreen extends StatefulWidget {
