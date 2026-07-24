@@ -6,6 +6,7 @@ import 'package:mat3amy/core/constants/app_images.dart';
 import 'package:mat3amy/core/functions/validations.dart';
 import 'package:mat3amy/core/routes/navigations.dart';
 import 'package:mat3amy/core/routes/routes.dart';
+import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/utils/styles/app_text_styles.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
 import 'package:mat3amy/core/widget/custom_text_form_field.dart';
@@ -29,13 +30,12 @@ class _LoginScreenState extends State<LoginScreen> {
     final cubit = context.read<AuthCubit>();
 
     return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is AuthErrorState) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.error)));
         }
-
         if (state is AuthSuccessState) {
           final result = state.loginResult;
 
@@ -49,9 +49,10 @@ class _LoginScreenState extends State<LoginScreen> {
           } else if (result.role == "user") {
             pushToBase(context, Routes.mainApp);
           } else if (result.role == "restaurant") {
-            if (result.hasRestaurantRequest) {
-              // غيرها لما تعمل شاشة المطعم الرئيسية
-              // pushToBase(context, Routes.restaurantMain);
+            final restaurant = await FirebaseProvider.getMyRestaurant();
+
+            if (restaurant != null) {
+              pushToBase(context, Routes.restaurantMain);
             } else {
               pushToBase(context, Routes.restaurantInfo);
             }

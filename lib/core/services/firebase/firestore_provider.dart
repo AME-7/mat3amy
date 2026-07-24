@@ -64,6 +64,9 @@ class FirebaseProvider {
       "tablesCount": request.tablesCount,
       "workHours": request.workHours,
       "status": "approved",
+
+      "distance": "",
+      "rate": 0.0,
     });
 
     await restaurantRequestsCollection.doc(request.ownerId).delete();
@@ -139,7 +142,7 @@ class FirebaseProvider {
   }
 
   static Future<void> updateMeal(MealModel meal) async {
-    await mealsCollection.doc(meal.id).update(meal.toJson());
+    await mealsCollection.doc(meal.id).update(meal.toUpdateData());
   }
 
   static Future<void> deleteMeal(String mealId) async {
@@ -250,9 +253,7 @@ class FirebaseProvider {
   }
 
   static Future<void> updateRestaurant(RestaurantModel restaurant) async {
-    await restaurantsCollection
-        .doc(restaurant.ownerId)
-        .update(restaurant.toJson());
+    await restaurantsCollection.doc(restaurant.id).update(restaurant.toJson());
   }
 
   static Future<void> deleteRestaurant(String ownerId) async {

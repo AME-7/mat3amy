@@ -8,12 +8,8 @@ class RestaurantModel {
   final String? image;
   final String? category;
   final String? mapUrl;
-
-  // الحقول القديمة
   final String? distance;
   final double? rate;
-
-  // الحقول الجديدة
   final String? phone;
   final String? city;
   final int? tablesCount;

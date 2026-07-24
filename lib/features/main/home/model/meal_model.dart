@@ -39,4 +39,15 @@ class MealModel {
       'price': price,
     };
   }
+
+  Map<String, dynamic> toUpdateData() {
+    return {
+      'name': name,
+      'description': description,
+      'image': image,
+      'restaurantId': restaurantId,
+      'rate': rate,
+      'price': price,
+    };
+  }
 }

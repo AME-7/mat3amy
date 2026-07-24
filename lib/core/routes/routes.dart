@@ -11,5 +11,6 @@ class Routes {
   static String mainApp = '/patientMainApp';
   static String settings = '/settings';
   static const restaurantInfo = "/restaurantInfo";
+  static const restaurantMain = "/restaurantMain";
   static const adminRequests = "/adminRequests";
 }
