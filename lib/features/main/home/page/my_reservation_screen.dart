@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
-import 'package:mat3amy/features/main/home/model/reservation_model.dart';
+import 'package:mat3amy/features/restaurant/model/reservation_model.dart';
 import 'package:mat3amy/features/main/home/page/edit_reservation_screen.dart';
 
 class MyReservationsScreen extends StatefulWidget {

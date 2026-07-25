@@ -8,6 +8,7 @@ class ReservationModel {
   final String? date;
   final String? time;
   final String? phone;
+  final String? status;
 
   final List<Map<String, dynamic>>? meals;
   final double? totalPrice;
@@ -24,6 +25,7 @@ class ReservationModel {
     this.phone,
     this.meals,
     this.totalPrice,
+    this.status,
   });
 
   factory ReservationModel.fromJson(
@@ -44,6 +46,7 @@ class ReservationModel {
           ? List<Map<String, dynamic>>.from(json['meals'])
           : [],
       totalPrice: (json['totalPrice'] as num?)?.toDouble() ?? 0,
+      status: json["status"] ?? "panding",
     );
   }
 
@@ -59,6 +62,7 @@ class ReservationModel {
       'phone': phone,
       'meals': meals ?? [],
       'totalPrice': totalPrice ?? 0,
+      'status': status ?? 'panding',
     };
   }
 }

@@ -7,6 +7,39 @@ import 'package:mat3amy/features/restaurant/cubit/restaurant_dashboard_state.dar
 class RestaurantReservationsScreen extends StatelessWidget {
   const RestaurantReservationsScreen({super.key});
 
+  Widget reservationStatus(String status) {
+    Color color;
+    String text;
+
+    switch (status) {
+      case "accepted":
+        color = Colors.green;
+        text = "مقبول";
+        break;
+
+      case "rejected":
+        color = Colors.red;
+        text = "مرفوض";
+        break;
+
+      default:
+        color = Colors.orange;
+        text = "قيد الانتظار";
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: .15),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(color: color, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,12 +103,14 @@ class RestaurantReservationsScreen extends StatelessWidget {
 
                         Text("الإجمالي : ${reservation.totalPrice} جنيه"),
 
+                        reservationStatus(reservation.status ?? "pending"),
                         const SizedBox(height: 12),
 
                         const Text(
                           "الوجبات",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
+                        const SizedBox(height: 10),
 
                         const SizedBox(height: 8),
 
@@ -102,7 +137,16 @@ class RestaurantReservationsScreen extends StatelessWidget {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.green,
                                 ),
-                                onPressed: () {},
+                                onPressed: reservation.status == "pending"
+                                    ? () {
+                                        context
+                                            .read<RestaurantDashboardCubit>()
+                                            .updateReservationStatus(
+                                              reservationId: reservation.id!,
+                                              status: "accepted",
+                                            );
+                                      }
+                                    : null,
                                 icon: const Icon(
                                   Icons.check,
                                   color: Colors.white,
@@ -121,7 +165,16 @@ class RestaurantReservationsScreen extends StatelessWidget {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.red,
                                 ),
-                                onPressed: () {},
+                                onPressed: reservation.status == "pending"
+                                    ? () {
+                                        context
+                                            .read<RestaurantDashboardCubit>()
+                                            .updateReservationStatus(
+                                              reservationId: reservation.id!,
+                                              status: "rejected",
+                                            );
+                                      }
+                                    : null,
                                 icon: const Icon(
                                   Icons.close,
                                   color: Colors.white,

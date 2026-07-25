@@ -6,7 +6,7 @@ import 'package:mat3amy/core/services/local/shared_pref.dart';
 import 'package:mat3amy/features/auth/presentation/model/user_model.dart';
 import 'package:mat3amy/features/main/home/model/meal_model.dart';
 import 'package:mat3amy/features/main/home/model/rating_model.dart';
-import 'package:mat3amy/features/main/home/model/reservation_model.dart';
+import 'package:mat3amy/features/restaurant/model/reservation_model.dart';
 import 'package:mat3amy/features/restaurant/model/restaurant_model.dart';
 import 'package:mat3amy/features/restaurant/model/restaurant_request_model.dart';
 
@@ -213,6 +213,13 @@ class FirebaseProvider {
     await reservationsCollection
         .doc(reservation.id)
         .update(reservation.toJson());
+  }
+
+  static Future<void> updateReservationStatus({
+    required String reservationId,
+    required String status,
+  }) async {
+    await reservationsCollection.doc(reservationId).update({"status": status});
   }
 
   static Future<void> addFavorite({

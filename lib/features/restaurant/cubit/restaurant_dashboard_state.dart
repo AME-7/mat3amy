@@ -1,5 +1,5 @@
 import 'package:mat3amy/features/main/home/model/meal_model.dart';
-import 'package:mat3amy/features/main/home/model/reservation_model.dart';
+import 'package:mat3amy/features/restaurant/model/reservation_model.dart';
 import 'package:mat3amy/features/restaurant/model/restaurant_model.dart';
 
 abstract class RestaurantDashboardState {}

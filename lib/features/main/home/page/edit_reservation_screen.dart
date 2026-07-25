@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
-import 'package:mat3amy/features/main/home/model/reservation_model.dart';
+import 'package:mat3amy/features/restaurant/model/reservation_model.dart';
 
 class EditReservationScreen extends StatefulWidget {
   const EditReservationScreen({super.key, required this.reservation});

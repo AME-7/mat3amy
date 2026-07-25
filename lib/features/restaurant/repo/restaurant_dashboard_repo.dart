@@ -3,7 +3,7 @@ import 'package:mat3amy/core/services/firebase/failure/failure.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/features/main/home/model/meal_model.dart';
 import 'package:mat3amy/features/main/home/model/rating_model.dart';
-import 'package:mat3amy/features/main/home/model/reservation_model.dart';
+import 'package:mat3amy/features/restaurant/model/reservation_model.dart';
 import 'package:mat3amy/features/restaurant/model/restaurant_model.dart';
 
 class RestaurantDashboardRepo {
@@ -113,6 +113,22 @@ class RestaurantDashboardRepo {
       );
 
       return right(reservations);
+    } catch (e) {
+      return left(Failure(massage: "حدث خطأ"));
+    }
+  }
+
+  static Future<Either<Failure, Unit>> updateReservationStatus({
+    required String reservationId,
+    required String status,
+  }) async {
+    try {
+      await FirebaseProvider.updateReservationStatus(
+        reservationId: reservationId,
+        status: status,
+      );
+
+      return right(unit);
     } catch (e) {
       return left(Failure(massage: "حدث خطأ"));
     }

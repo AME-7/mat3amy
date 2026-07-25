@@ -63,12 +63,9 @@ class RestaurantModel {
       "image": image,
       "category": category,
       "mapUrl": mapUrl,
-
-      // القديمة
       "distance": distance,
       "rate": rate,
 
-      // الجديدة
       "phone": phone,
       "city": city,
       "tablesCount": tablesCount,

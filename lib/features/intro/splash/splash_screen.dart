@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mat3amy/core/constants/app_images.dart';
 import 'package:mat3amy/core/routes/navigations.dart';
 import 'package:mat3amy/core/routes/routes.dart';
+import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/services/local/shared_pref.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,19 +17,47 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    goNext();
+  }
+
+  Future<void> goNext() async {
+    await Future.delayed(const Duration(seconds: 3));
+
     bool isOnboardingShown = SharedPref.isOnboardingShown();
-    bool isLoggedIn = SharedPref.getUserId().isNotEmpty == true;
-    Future.delayed(const Duration(seconds: 3)).then((value) {
-      if (isLoggedIn) {
-        pushReplacement(context, Routes.mainApp);
+
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      if (isOnboardingShown) {
+        pushReplacement(context, Routes.welcome);
       } else {
-        if (isOnboardingShown) {
-          pushReplacement(context, Routes.welcome);
-        } else {
-          pushReplacement(context, Routes.onboarding);
-        }
+        pushReplacement(context, Routes.onboarding);
       }
-    });
+      return;
+    }
+
+    final doc = await FirebaseProvider.usersCollection.doc(user.uid).get();
+
+    if (!doc.exists) {
+      pushReplacement(context, Routes.login);
+      return;
+    }
+
+    final role = doc.data()?["role"];
+
+    if (role == "admin") {
+      pushReplacement(context, Routes.adminRequests);
+    } else if (role == "restaurant") {
+      final restaurant = await FirebaseProvider.getMyRestaurant();
+
+      if (restaurant != null) {
+        pushReplacement(context, Routes.restaurantMain);
+      } else {
+        pushReplacement(context, Routes.restaurantInfo);
+      }
+    } else {
+      pushReplacement(context, Routes.mainApp);
+    }
   }
 
   @override
