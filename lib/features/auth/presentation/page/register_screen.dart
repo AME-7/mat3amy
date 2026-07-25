@@ -130,10 +130,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         children: [
                           RadioListTile<bool>(
                             value: false,
-                            // ignore: deprecated_member_use
                             groupValue: isRestaurant,
                             title: const Text("مستخدم"),
-                            // ignore: deprecated_member_use
                             onChanged: (value) {
                               setState(() {
                                 isRestaurant = value!;

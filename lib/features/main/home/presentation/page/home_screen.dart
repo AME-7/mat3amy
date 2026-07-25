@@ -5,13 +5,13 @@ import 'package:gap/gap.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/utils/styles/app_text_styles.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
-import 'package:mat3amy/features/main/home/widgets/header.dart';
-import 'package:mat3amy/features/restaurant/model/restaurant_model.dart';
-import 'package:mat3amy/features/main/home/widgets/banner.dart';
-import 'package:mat3amy/features/main/home/widgets/categories.dart';
-import 'package:mat3amy/features/main/home/widgets/restaurant_list.dart';
-import 'package:mat3amy/features/main/home/widgets/restaurants_header.dart';
-import 'package:mat3amy/features/main/home/widgets/search_bar.dart';
+import 'package:mat3amy/features/main/home/presentation/widgets/header.dart';
+import 'package:mat3amy/features/restaurant/data/model/restaurant_model.dart';
+import 'package:mat3amy/features/main/home/presentation/widgets/banner.dart';
+import 'package:mat3amy/features/main/home/presentation/widgets/categories.dart';
+import 'package:mat3amy/features/main/home/presentation/widgets/restaurant_list.dart';
+import 'package:mat3amy/features/main/home/presentation/widgets/restaurants_header.dart';
+import 'package:mat3amy/features/main/home/presentation/widgets/search_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.onSearch});

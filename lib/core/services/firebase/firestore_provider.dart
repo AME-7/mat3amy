@@ -3,12 +3,12 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mat3amy/core/services/local/shared_pref.dart';
-import 'package:mat3amy/features/auth/presentation/model/user_model.dart';
-import 'package:mat3amy/features/main/home/model/meal_model.dart';
-import 'package:mat3amy/features/main/home/model/rating_model.dart';
-import 'package:mat3amy/features/restaurant/model/reservation_model.dart';
-import 'package:mat3amy/features/restaurant/model/restaurant_model.dart';
-import 'package:mat3amy/features/restaurant/model/restaurant_request_model.dart';
+import 'package:mat3amy/features/auth/data/model/user_model.dart';
+import 'package:mat3amy/features/main/home/presentation/model/meal_model.dart';
+import 'package:mat3amy/features/main/home/presentation/model/rating_model.dart';
+import 'package:mat3amy/features/restaurant/data/model/reservation_model.dart';
+import 'package:mat3amy/features/restaurant/data/model/restaurant_model.dart';
+import 'package:mat3amy/features/restaurant/data/model/restaurant_request_model.dart';
 
 class FirebaseProvider {
   static final FirebaseAuth _auth = FirebaseAuth.instance;

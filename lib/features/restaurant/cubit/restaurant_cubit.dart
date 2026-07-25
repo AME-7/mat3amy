@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mat3amy/core/functions/image_uploader.dart';
 import 'package:mat3amy/features/restaurant/cubit/restaurant_request_state.dart';
-import 'package:mat3amy/features/restaurant/model/restaurant_request_model.dart';
-import 'package:mat3amy/features/restaurant/repo/restaurant_repo.dart';
+import 'package:mat3amy/features/restaurant/data/model/restaurant_request_model.dart';
+import 'package:mat3amy/features/restaurant/data/repo/restaurant_repo.dart';
 
 class RestaurantCubit extends Cubit<RestaurantRequestState> {
   RestaurantCubit() : super(RestaurantRequestInitialState());

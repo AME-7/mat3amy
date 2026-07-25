@@ -4,9 +4,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mat3amy/core/services/firebase/failure/failure.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/services/local/shared_pref.dart';
-import 'package:mat3amy/features/auth/presentation/model/login_result.dart';
-import 'package:mat3amy/features/auth/presentation/repo/auth_params.dart';
-import 'package:mat3amy/features/auth/presentation/model/user_model.dart';
+import 'package:mat3amy/features/auth/data/model/login_result.dart';
+import 'package:mat3amy/features/auth/data/repo/auth_params.dart';
+import 'package:mat3amy/features/auth/data/model/user_model.dart';
 
 class AuthRepo {
   static Future<Either<Failure, LoginResult>> login(AuthParams params) async {

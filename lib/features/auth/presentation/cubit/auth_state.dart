@@ -1,4 +1,4 @@
-import 'package:mat3amy/features/auth/presentation/model/login_result.dart';
+import 'package:mat3amy/features/auth/data/model/login_result.dart';
 
 class AuthState {}
 

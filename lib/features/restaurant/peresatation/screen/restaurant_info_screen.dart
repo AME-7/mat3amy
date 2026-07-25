@@ -8,7 +8,7 @@ import 'package:mat3amy/core/widget/custom_text_form_field.dart';
 import 'package:mat3amy/core/widget/main_button.dart';
 import 'package:mat3amy/features/restaurant/cubit/restaurant_cubit.dart';
 import 'package:mat3amy/features/restaurant/cubit/restaurant_request_state.dart';
-import 'package:mat3amy/features/restaurant/widget/restaurant_categories.dart';
+import 'package:mat3amy/features/restaurant/peresatation/widget/restaurant_categories.dart';
 
 class RestaurantInfoScreen extends StatefulWidget {
   const RestaurantInfoScreen({super.key});

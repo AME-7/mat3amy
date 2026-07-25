@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mat3amy/core/utils/styles/app_text_styles.dart';
-import 'package:mat3amy/features/restaurant/model/restaurant_model.dart';
+import 'package:mat3amy/features/restaurant/data/model/restaurant_model.dart';
 
 class RestaurantsHeader extends StatelessWidget {
   const RestaurantsHeader({super.key, required this.restaurants});

@@ -9,7 +9,7 @@ import 'package:mat3amy/core/utils/styles/colors.dart';
 import 'package:mat3amy/core/widget/main_button.dart';
 import 'package:mat3amy/features/restaurant/cubit/restaurant_dashboard_cubit.dart';
 import 'package:mat3amy/features/restaurant/cubit/restaurant_dashboard_state.dart';
-import 'package:mat3amy/features/restaurant/screen/edit_restaurant_Screen.dart';
+import 'package:mat3amy/features/restaurant/peresatation/screen/edit_restaurant_Screen.dart';
 
 class RestaurantProfileScreen extends StatelessWidget {
   const RestaurantProfileScreen({super.key});

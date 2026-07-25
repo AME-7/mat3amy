@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:mat3amy/core/utils/styles/app_text_styles.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
-import 'package:mat3amy/features/main/home/page/favorites_scrren.dart';
-import 'package:mat3amy/features/main/home/page/home_screen.dart';
-import 'package:mat3amy/features/main/home/page/my_reservation_screen.dart';
+import 'package:mat3amy/features/main/home/presentation/page/favorites_scrren.dart';
+import 'package:mat3amy/features/main/home/presentation/page/home_screen.dart';
+import 'package:mat3amy/features/main/home/presentation/page/my_reservation_screen.dart';
 import 'package:mat3amy/features/main/profile/page/profile_screen.dart';
 import 'package:mat3amy/features/main/search/search_screen.dart';
 

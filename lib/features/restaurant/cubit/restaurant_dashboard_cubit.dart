@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mat3amy/features/main/home/model/meal_model.dart';
-import 'package:mat3amy/features/restaurant/model/reservation_model.dart';
+import 'package:mat3amy/features/main/home/presentation/model/meal_model.dart';
+import 'package:mat3amy/features/restaurant/data/model/reservation_model.dart';
 import 'package:mat3amy/features/restaurant/cubit/restaurant_dashboard_state.dart';
-import 'package:mat3amy/features/restaurant/model/restaurant_model.dart';
-import 'package:mat3amy/features/restaurant/repo/restaurant_dashboard_repo.dart';
+import 'package:mat3amy/features/restaurant/data/model/restaurant_model.dart';
+import 'package:mat3amy/features/restaurant/data/repo/restaurant_dashboard_repo.dart';
 
 class RestaurantDashboardCubit extends Cubit<RestaurantDashboardState> {
   RestaurantDashboardCubit() : super(RestaurantDashboardInitialState());

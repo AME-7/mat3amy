@@ -7,12 +7,12 @@ import 'package:mat3amy/features/auth/presentation/page/register_screen.dart';
 import 'package:mat3amy/features/intro/enboarding/onboarding_screen.dart';
 import 'package:mat3amy/features/intro/splash/splash_screen.dart';
 import 'package:mat3amy/features/intro/welcom/welcome_screen.dart';
-import 'package:mat3amy/features/main/main_app_screen.dart';
+import 'package:mat3amy/features/main/page/main_app_screen.dart';
 import 'package:mat3amy/features/main/profile/setting/settings_view.dart';
 import 'package:mat3amy/features/restaurant/cubit/restaurant_cubit.dart';
 import 'package:mat3amy/features/restaurant/cubit/restaurant_dashboard_cubit.dart';
-import 'package:mat3amy/features/restaurant/screen/restaurant_info_screen.dart';
-import 'package:mat3amy/features/restaurant/screen/restaurant_main_app_screen.dart';
+import 'package:mat3amy/features/restaurant/peresatation/screen/restaurant_info_screen.dart';
+import 'package:mat3amy/features/restaurant/peresatation/screen/restaurant_main_app_screen.dart';
 
 class AppRouter {
   static GoRouter routes = GoRouter(

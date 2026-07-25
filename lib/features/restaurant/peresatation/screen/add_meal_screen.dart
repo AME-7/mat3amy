@@ -7,7 +7,7 @@ import 'package:mat3amy/core/functions/image_uploader.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/widget/custom_text_form_field.dart';
 import 'package:mat3amy/core/widget/main_button.dart';
-import 'package:mat3amy/features/main/home/model/meal_model.dart';
+import 'package:mat3amy/features/main/home/presentation/model/meal_model.dart';
 import 'package:mat3amy/features/restaurant/cubit/restaurant_dashboard_cubit.dart';
 
 class AddMealScreen extends StatefulWidget {

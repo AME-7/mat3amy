@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:mat3amy/core/utils/styles/app_text_styles.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
-import 'package:mat3amy/features/restaurant/screen/restaurant_home_screen.dart';
-import 'package:mat3amy/features/restaurant/screen/restaurant_meals_screen.dart';
-import 'package:mat3amy/features/restaurant/screen/restaurant_profile_screen.dart';
-import 'package:mat3amy/features/restaurant/screen/restaurant_reservations_screen.dart';
+import 'package:mat3amy/features/restaurant/peresatation/screen/restaurant_home_screen.dart';
+import 'package:mat3amy/features/restaurant/peresatation/screen/restaurant_meals_screen.dart';
+import 'package:mat3amy/features/restaurant/peresatation/screen/restaurant_profile_screen.dart';
+import 'package:mat3amy/features/restaurant/peresatation/screen/restaurant_reservations_screen.dart';
 
 class RestaurantMainAppScreen extends StatefulWidget {
   const RestaurantMainAppScreen({super.key});

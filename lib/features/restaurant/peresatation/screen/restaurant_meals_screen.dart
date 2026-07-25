@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
 import 'package:mat3amy/features/restaurant/cubit/restaurant_dashboard_cubit.dart';
 import 'package:mat3amy/features/restaurant/cubit/restaurant_dashboard_state.dart';
-import 'package:mat3amy/features/restaurant/screen/add_meal_screen.dart';
+import 'package:mat3amy/features/restaurant/peresatation/screen/add_meal_screen.dart';
 
 class RestaurantMealsScreen extends StatefulWidget {
   const RestaurantMealsScreen({super.key});

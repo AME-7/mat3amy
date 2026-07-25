@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:mat3amy/core/services/firebase/failure/failure.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
-import 'package:mat3amy/features/restaurant/model/restaurant_request_model.dart';
+import 'package:mat3amy/features/restaurant/data/model/restaurant_request_model.dart';
 
 class RestaurantRepo {
   static Future<Either<Failure, Unit>> addRestaurantRequest(

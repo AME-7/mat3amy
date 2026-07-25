@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mat3amy/features/restaurant/model/restaurant_model.dart';
-import 'package:mat3amy/features/main/home/widgets/restaurant_card.dart';
+import 'package:mat3amy/features/restaurant/data/model/restaurant_model.dart';
+import 'package:mat3amy/features/main/home/presentation/widgets/restaurant_card.dart';
 
 class RestaurantsListWidget extends StatelessWidget {
   const RestaurantsListWidget({super.key, required this.restaurants});

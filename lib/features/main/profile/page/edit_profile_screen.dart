@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
-import 'package:mat3amy/features/auth/presentation/model/user_model.dart';
+import 'package:mat3amy/features/auth/data/model/user_model.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final UserModel user;

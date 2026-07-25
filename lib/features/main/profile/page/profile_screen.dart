@@ -11,7 +11,7 @@ import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/utils/styles/app_text_styles.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
 import 'package:mat3amy/core/widget/main_button.dart';
-import 'package:mat3amy/features/auth/presentation/model/user_model.dart';
+import 'package:mat3amy/features/auth/data/model/user_model.dart';
 import 'package:mat3amy/features/main/profile/page/edit_profile_screen.dart';
 import 'package:mat3amy/features/main/profile/widgets/item_tile.dart';
 

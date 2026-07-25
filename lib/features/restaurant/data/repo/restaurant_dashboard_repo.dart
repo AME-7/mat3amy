@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:mat3amy/core/services/firebase/failure/failure.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
-import 'package:mat3amy/features/main/home/model/meal_model.dart';
-import 'package:mat3amy/features/main/home/model/rating_model.dart';
-import 'package:mat3amy/features/restaurant/model/reservation_model.dart';
-import 'package:mat3amy/features/restaurant/model/restaurant_model.dart';
+import 'package:mat3amy/features/main/home/presentation/model/meal_model.dart';
+import 'package:mat3amy/features/main/home/presentation/model/rating_model.dart';
+import 'package:mat3amy/features/restaurant/data/model/reservation_model.dart';
+import 'package:mat3amy/features/restaurant/data/model/restaurant_model.dart';
 
 class RestaurantDashboardRepo {
   static Future<Either<Failure, RestaurantModel?>> getMyRestaurant() async {

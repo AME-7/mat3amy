@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mat3amy/features/auth/presentation/cubit/auth_state.dart';
-import 'package:mat3amy/features/auth/presentation/repo/auth_params.dart';
-import 'package:mat3amy/features/auth/presentation/repo/auth_repo.dart';
+import 'package:mat3amy/features/auth/data/repo/auth_params.dart';
+import 'package:mat3amy/features/auth/data/repo/auth_repo.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitialState());

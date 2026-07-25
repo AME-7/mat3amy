@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:mat3amy/core/services/firebase/firestore_provider.dart';
 import 'package:mat3amy/core/utils/styles/colors.dart';
-import 'package:mat3amy/features/main/home/model/rating_model.dart';
+import 'package:mat3amy/features/main/home/presentation/model/rating_model.dart';
 
 class AddRatingScreen extends StatefulWidget {
   const AddRatingScreen({super.key, required this.restaurantId});
